@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">AppsinnovateTask</string>
+    <string name="facebook_app_id">1215570191854924</string>
+    <string name="tasks_title">Tasks Views</string>
+    <string name="task_facebook">Facebook Task</string>
+    <string name="task_countries">Get Countries</string>
+    <string name="task_contacts">Get Contacts</string>
+    <string name="task_show_stores">Map Screen</string>
+    <string name="task_share_photo">Share Photo </string>
+    <string name="task_cache_photo">Cache Photo </string>
+    <string name="task_integration_events">Integrate the calendar</string>
+    <string name="remember_me">Remember me</string>
+    <string name="facebook_friends">Show Facebook Friends</string>
+</resources>
