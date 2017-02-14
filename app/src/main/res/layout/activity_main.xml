@@ -14,45 +14,45 @@
         android:textSize="20sp" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_facebook_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/task_facebook"
-        android:id="@+id/btn_facebook_task"/>
+        android:text="@string/task_facebook" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_get_countries"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/task_countries"
-        android:id="@+id/btn_get_countries"/>
+        android:text="@string/task_countries" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_get_contacts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/task_contacts"
-        android:id="@+id/btn_get_contacts"/>
+        android:text="@string/task_contacts" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_show_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/task_show_stores"
-        android:id="@+id/btn_show_map"/>
+        android:text="@string/task_show_stores" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_integrate_calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/task_integration_events"
-        android:id="@+id/btn_integrate_calendar"/>
+        android:text="@string/task_integration_events" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_share_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/task_share_photo"
-        android:id="@+id/btn_share_photo"/>
+        android:text="@string/task_share_photo" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_cache_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/task_cache_photo"
-        android:id="@+id/btn_cache_photo"/>
+        android:text="@string/task_cache_photo" />
 
 </LinearLayout>

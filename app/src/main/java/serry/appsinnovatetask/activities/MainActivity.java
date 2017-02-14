@@ -13,9 +13,6 @@ import serry.appsinnovatetask.R;
 
 public class MainActivity extends AppCompatActivity {
     private Intent intent;
-    @BindView(R.id.btn_facebook_task)
-    AppCompatButton btnFacebookTask;
-
     @OnClick(R.id.btn_facebook_task)
     public void facebookTask() {
         intent = new Intent(MainActivity.this, FacebookTask.class);
