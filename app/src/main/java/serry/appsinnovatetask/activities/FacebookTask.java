@@ -1,10 +1,10 @@
 package serry.appsinnovatetask.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -19,15 +19,13 @@ import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import serry.appsinnovatetask.R;
-import serry.appsinnovatetask.utils.Constants;
 
 public class FacebookTask extends AppCompatActivity {
     private CallbackManager callbackManager;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-    @BindView(R.id.login_button)
+    @BindView(R.id.loginButton)
     LoginButton loginButton;
 
     @Override
@@ -37,24 +35,36 @@ public class FacebookTask extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_facebook_task);
         ButterKnife.bind(this);
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends", "email"));
+
+
+        LoginManager.getInstance().logInWithReadPermissions(FacebookTask.this, Arrays.asList("public_profile", "user_friends", "email"));
+
+
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
+                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onCancel() {
+                Toast.makeText(getApplicationContext(), "cancel", Toast.LENGTH_LONG).show();
 
             }
 
             @Override
             public void onError(FacebookException e) {
+                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
 
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 }

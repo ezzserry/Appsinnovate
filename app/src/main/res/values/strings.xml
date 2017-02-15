@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">AppsinnovateTask</string>
-    <string name="facebook_app_id">1215570191854924</string>
+    <string name="facebook_app_id">1913826838863396</string>
     <string name="tasks_title">Tasks Views</string>
     <string name="task_facebook">Facebook Task</string>
     <string name="task_countries">Get Countries</string>
@@ -11,4 +11,5 @@
     <string name="task_integration_events">Integrate the calendar</string>
     <string name="remember_me">Remember me</string>
     <string name="facebook_friends">Show Facebook Friends</string>
+    <string name="search_hint">Search</string>
 </resources>

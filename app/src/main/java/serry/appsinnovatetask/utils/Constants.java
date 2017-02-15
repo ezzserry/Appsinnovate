@@ -6,4 +6,8 @@ package serry.appsinnovatetask.utils;
 
 public class Constants {
     public static final String fbAccessToken = "token";
+
+
+
+    public static final String URL_COUNTRIES_LIST=" https://restcountries.eu/rest/v1";
 }
