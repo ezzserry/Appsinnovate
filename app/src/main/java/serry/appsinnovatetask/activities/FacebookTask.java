@@ -3,59 +3,114 @@ package serry.appsinnovatetask.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
-import java.util.Arrays;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import serry.appsinnovatetask.R;
+import serry.appsinnovatetask.utils.Constants;
 
 public class FacebookTask extends AppCompatActivity {
     private CallbackManager callbackManager;
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor editor;
+
+    private boolean isChecked;
     @BindView(R.id.loginButton)
     LoginButton loginButton;
+
+    @BindView(R.id.cb_remember_me)
+    CheckBox cbRemember;
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
+
+    @OnClick(R.id.btn_facebook_friends)
+    public void getFBFriends() {
+        Bundle requiredFields = new Bundle();
+        requiredFields.putString("fields", "name,picture,width[500],height[500]");
+        AccessToken currentAccessToken = AccessToken.getCurrentAccessToken();
+        new GraphRequest(currentAccessToken, "/{friend-list-id", requiredFields, HttpMethod.GET, new GraphRequest.Callback() {
+            @Override
+            public void onCompleted(GraphResponse response) {
+
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_facebook_task);
         ButterKnife.bind(this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
+        isChecked = prefs.getBoolean(Constants.isChecked, false);
+        if (isChecked) {
+            cbRemember.setChecked(true);
+        } else
+            cbRemember.setChecked(false);
 
-        LoginManager.getInstance().logInWithReadPermissions(FacebookTask.this, Arrays.asList("public_profile", "user_friends", "email"));
-
-
+        callbackManager = CallbackManager.Factory.create();
+        loginButton.setReadPermissions("email", "user_friends,public_profile");
+        // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+                // App code
+//                GraphRequest request = GraphRequest.newMeRequest(
+//                        loginResult.getAccessToken(),
+//                        new GraphRequest.GraphJSONObjectCallback() {
+//                            @Override
+//                            public void onCompleted(
+//                                    JSONObject object,
+//                                    GraphResponse response) {
+//                                // Application code
+//
+//                            }
+//                        });
+//                Bundle parameters = new Bundle();
+//                parameters.putString("fields", "id,name,link,email,friends");
+//                request.setParameters(parameters);
+//                request.executeAsync();
+//                new GraphRequest(
+//                        AccessToken.getCurrentAccessToken(),
+//                        "/{user-id}",
+//                        null,
+//                        HttpMethod.GET,
+//                        new GraphRequest.Callback() {
+//                            public void onCompleted(GraphResponse response) {
+//            /* handle the result */
+//                            }
+//                        }
+//                ).executeAsync();
             }
 
             @Override
             public void onCancel() {
-                Toast.makeText(getApplicationContext(), "cancel", Toast.LENGTH_LONG).show();
+                // App code
 
+                Toast.makeText(getApplicationContext(), "cancel", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onError(FacebookException e) {
-                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
+            public void onError(FacebookException exception) {
+                // App code
 
+                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -67,4 +122,21 @@ public class FacebookTask extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        editor = prefs.edit();
+        if (!cbRemember.isChecked()) {
+            LoginManager.getInstance().logOut();
+            isChecked = false;
+            editor.putBoolean(Constants.isChecked, false);
+            editor.commit();
+
+        } else {
+            isChecked = true;
+            editor.putBoolean(Constants.isChecked, true);
+            editor.commit();
+
+        }
+    }
 }

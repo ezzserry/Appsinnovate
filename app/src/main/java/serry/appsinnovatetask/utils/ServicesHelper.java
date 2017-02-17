@@ -3,12 +3,11 @@ package serry.appsinnovatetask.utils;
 import android.content.Context;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 /**
  * Created by PC on 2/15/2017.
@@ -26,9 +25,9 @@ public class ServicesHelper {
         return sharedInstance;
     }
 
-    public void getCountriesList(Context context, Response.Listener<JSONObject> success, Response.ErrorListener errorListener) {
+    public void getCountriesList(Context context, Response.Listener<JSONArray> success, Response.ErrorListener errorListener) {
         String URL = Constants.URL_COUNTRIES_LIST;
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, new JSONObject(), success, errorListener);
+        JsonArrayRequest request = new JsonArrayRequest(URL, success, errorListener);
         request.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

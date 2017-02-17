@@ -12,4 +12,5 @@
     <string name="remember_me">Remember me</string>
     <string name="facebook_friends">Show Facebook Friends</string>
     <string name="search_hint">Search</string>
+    <string name="login_facebook">Login with Facebook </string>
 </resources>
