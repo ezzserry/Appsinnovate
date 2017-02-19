@@ -99,6 +99,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @OnClick(R.id.btn_show_map)
+    public void showMap()
+    {
+        intent=new Intent(MainActivity.this,MapsActivity.class);
+        startActivity(intent);
+    }
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,13 +143,14 @@ public class MainActivity extends AppCompatActivity {
 
         ShareApi.share(content, null);
 
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent data) {
         super.onActivityResult(requestCode, responseCode, data);
         callbackManager.onActivityResult(requestCode, responseCode, data);
-        Toast.makeText(getApplicationContext(), "process succeeded", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "process succeeded,you can check your profile now ", Toast.LENGTH_LONG).show();
 
     }
 

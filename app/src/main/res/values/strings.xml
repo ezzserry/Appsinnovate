@@ -7,10 +7,10 @@
     <string name="task_contacts">Get Contacts</string>
     <string name="task_show_stores">Map Screen</string>
     <string name="task_share_photo">Share Photo </string>
-    <string name="task_cache_photo">Cache Photo </string>
     <string name="task_integration_events">Integrate the calendar</string>
     <string name="remember_me">Remember me</string>
     <string name="facebook_friends">Show Facebook Friends</string>
     <string name="search_hint">Search</string>
     <string name="login_facebook">Login with Facebook </string>
+    <string name="title_activity_maps">Map</string>
 </resources>

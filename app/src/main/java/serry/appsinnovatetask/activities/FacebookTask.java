@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
@@ -19,35 +21,71 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import serry.appsinnovatetask.R;
+import serry.appsinnovatetask.adapters.FriendsAdapter;
+import serry.appsinnovatetask.models.Friend;
 import serry.appsinnovatetask.utils.Constants;
 
 public class FacebookTask extends AppCompatActivity {
     private CallbackManager callbackManager;
-
+    private List<Friend> friendsList;
+    private FriendsAdapter friendsAdapter;
     private boolean isChecked;
+
+    @BindView(R.id.rv_friends_list)
+    RecyclerView rvFriendList;
+
     @BindView(R.id.loginButton)
     LoginButton loginButton;
 
     @BindView(R.id.cb_remember_me)
     CheckBox cbRemember;
+
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
 
     @OnClick(R.id.btn_facebook_friends)
     public void getFBFriends() {
-        Bundle requiredFields = new Bundle();
-        requiredFields.putString("fields", "name,picture,width[500],height[500]");
+        Bundle required = new Bundle();
+        required.putString("fields",
+                "uid, name, picture.width(500).height(500)");
+        required.putString("limit", "5000");
         AccessToken currentAccessToken = AccessToken.getCurrentAccessToken();
-        new GraphRequest(currentAccessToken, "/{friend-list-id", requiredFields, HttpMethod.GET, new GraphRequest.Callback() {
+        new GraphRequest(currentAccessToken, "/me/taggable_friends", required, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
 
+                JSONObject jsonObject = response.getJSONObject();
+                try {
+
+                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonFriend = jsonArray.getJSONObject(i);
+                        Friend friend = new Friend(jsonFriend.getString("name"), jsonFriend.getJSONObject("picture").getJSONObject("data").getString("url"));
+                        friendsList.add(friend);
+                    }
+                    friendsAdapter = new FriendsAdapter(friendsList, getApplicationContext());
+                    rvFriendList.setAdapter(friendsAdapter);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException nullPointerE) {
+                    Toast.makeText(getApplicationContext(), "You must log in facebook first", Toast.LENGTH_LONG).show();
+
+                }
             }
-        });
+        }).executeAsync();
     }
 
     @Override
@@ -56,7 +94,9 @@ public class FacebookTask extends AppCompatActivity {
         setContentView(R.layout.activity_facebook_task);
         ButterKnife.bind(this);
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
+        friendsList = new ArrayList<>();
+        rvFriendList.setLayoutManager(new LinearLayoutManager(this));
+        rvFriendList.hasFixedSize();
         isChecked = prefs.getBoolean(Constants.isChecked, false);
         if (isChecked) {
             cbRemember.setChecked(true);
@@ -70,46 +110,15 @@ public class FacebookTask extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
-                // App code
-//                GraphRequest request = GraphRequest.newMeRequest(
-//                        loginResult.getAccessToken(),
-//                        new GraphRequest.GraphJSONObjectCallback() {
-//                            @Override
-//                            public void onCompleted(
-//                                    JSONObject object,
-//                                    GraphResponse response) {
-//                                // Application code
-//
-//                            }
-//                        });
-//                Bundle parameters = new Bundle();
-//                parameters.putString("fields", "id,name,link,email,friends");
-//                request.setParameters(parameters);
-//                request.executeAsync();
-//                new GraphRequest(
-//                        AccessToken.getCurrentAccessToken(),
-//                        "/{user-id}",
-//                        null,
-//                        HttpMethod.GET,
-//                        new GraphRequest.Callback() {
-//                            public void onCompleted(GraphResponse response) {
-//            /* handle the result */
-//                            }
-//                        }
-//                ).executeAsync();
             }
 
             @Override
             public void onCancel() {
-                // App code
-
                 Toast.makeText(getApplicationContext(), "cancel", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException exception) {
-                // App code
-
                 Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
             }
         });
