@@ -5,16 +5,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import serry.appsinnovatetask.R;
 import serry.appsinnovatetask.models.Friend;
 
@@ -42,19 +48,22 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
     @Override
     public void onBindViewHolder(final FriendsViewHolder holder, int position) {
         Friend countries = countriesList.get(position);
+        Picasso.with(mContext).load(countries.getImage()).into(holder.ivPP, new Callback() {
+            @Override
+            public void onSuccess() {
+                holder.ivPP.setVisibility(View.VISIBLE);
+                holder.pbImage.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError() {
+
+                holder.ivPP.setVisibility(View.VISIBLE);
+                holder.pbImage.setVisibility(View.GONE);
+                holder.ivPP.setImageResource(R.drawable.ic_contact);
+            }
+        });
         holder.tvUsername.setText(countries.getName());
-        Glide.with(mContext).load(countries.getImage()).fitCenter().listener(new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-
-                return false;
-            }
-        }).into(holder.ivPP);
     }
 
     @Override
@@ -63,13 +72,19 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
     }
 
     public static class FriendsViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tvPhoneNumber)
         TextView tvUsername;
+        @BindView(R.id.ivContactImage)
         ImageView ivPP;
+        @BindView(R.id.pbImage)
+        ProgressBar pbImage;
+        @BindView(R.id.flContainer)
+        FrameLayout flContainer;
 
         public FriendsViewHolder(View itemView) {
             super(itemView);
-            tvUsername = (TextView) itemView.findViewById(R.id.tvPhoneNumber);
-            ivPP = (ImageView) itemView.findViewById(R.id.ivContactImage);
+            ButterKnife.bind(this,itemView);
+            flContainer.setVisibility(View.VISIBLE);
 
         }
     }

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,16 +47,15 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView ivContactImage;
         TextView tvContactName;
         TextView tvPhoneNumber;
-
+        FrameLayout flContainer;
         public ContactViewHolder(View itemView) {
             super(itemView);
-            ivContactImage = (ImageView) itemView.findViewById(R.id.ivContactImage);
             tvContactName = (TextView) itemView.findViewById(R.id.tvContactName);
             tvPhoneNumber = (TextView) itemView.findViewById(R.id.tvPhoneNumber);
-            ivContactImage.setVisibility(View.VISIBLE);
+            flContainer = (FrameLayout) itemView.findViewById(R.id.flContainer);
+            flContainer.setVisibility(View.GONE);
         }
     }
 }

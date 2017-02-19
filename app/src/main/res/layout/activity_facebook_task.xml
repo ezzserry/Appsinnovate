@@ -29,11 +29,22 @@
         android:layout_height="wrap_content"
         android:text="@string/facebook_friends" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_friends_list"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:visibility="visible" />
+        android:layout_height="wrap_content">
 
+        <ProgressBar
+            android:id="@+id/pbFriendlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_friends_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:visibility="visible" />
+    </FrameLayout>
 </LinearLayout>

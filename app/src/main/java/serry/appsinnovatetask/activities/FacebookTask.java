@@ -7,7 +7,9 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -53,12 +55,14 @@ public class FacebookTask extends AppCompatActivity {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-
+    @BindView(R.id.pbFriendlist)
+    ProgressBar pbFriendList;
     @OnClick(R.id.btn_facebook_friends)
     public void getFBFriends() {
+            pbFriendList.setVisibility(View.VISIBLE);
         Bundle required = new Bundle();
         required.putString("fields",
-                "uid, name, picture.width(500).height(500)");
+                "uid, name, picture.width(200).height(200)");
         required.putString("limit", "5000");
         AccessToken currentAccessToken = AccessToken.getCurrentAccessToken();
         new GraphRequest(currentAccessToken, "/me/taggable_friends", required, HttpMethod.GET, new GraphRequest.Callback() {
@@ -76,7 +80,7 @@ public class FacebookTask extends AppCompatActivity {
                     }
                     friendsAdapter = new FriendsAdapter(friendsList, getApplicationContext());
                     rvFriendList.setAdapter(friendsAdapter);
-
+                    pbFriendList.setVisibility(View.GONE);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

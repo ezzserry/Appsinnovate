@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,10 +47,13 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
 
     public static class CountriesViewHolder extends RecyclerView.ViewHolder {
         TextView tvCountryName;
+        FrameLayout rlContainer;
 
         public CountriesViewHolder(View itemView) {
             super(itemView);
             tvCountryName = (TextView) itemView.findViewById(R.id.tvPhoneNumber);
+            rlContainer = (FrameLayout) itemView.findViewById(R.id.flContainer);
+            rlContainer.setVisibility(View.GONE);
         }
     }
 }
